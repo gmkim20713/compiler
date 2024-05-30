@@ -50,7 +50,8 @@ declaration		: dcl_spec init_dcl_list TSEMICOLON		{ semantic(28); }
 init_dcl_list		: init_declarator				{ semantic(29); }
 			| init_dcl_list TCOMMA init_declarator		{ semantic(30); };
 init_declarator		: declarator				{ semantic(31); }
-			| declarator TASSIGN TNUMBER		{ semantic(32); };
+			| declarator TASSIGN TNUMBER		{ semantic(32); }
+			| declarator TASSIGN TDECIMAL		{ semantic(102); };
 declarator		: TIDENT					{ semantic(33); }
 			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); };
 opt_number		: TNUMBER				{ semantic(35); }
