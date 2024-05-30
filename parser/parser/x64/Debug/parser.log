@@ -1,0 +1,12 @@
+﻿  lex.yy.c
+lex.yy.c(1153,3): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+lex.yy.c(1320,28): warning C4244: '초기화 중': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+lex.yy.c(1507,41): warning C4996: 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno. See online help for details.
+  parser_tab.c
+bison.simple(317,4): warning C4013: 'yyerror'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+bison.simple(377,16): warning C4013: 'yylex'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+bison.simple(289,31): warning C4244: '초기화 중': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  main.c
+  reporterror.c
+  코드를 생성하고 있습니다...
+  parser.vcxproj -> C:\Users\cse_223\Desktop\parser\compiler\parser\x64\Debug\parser.exe
