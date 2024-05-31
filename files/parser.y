@@ -34,7 +34,8 @@ type_specifier		: TINT					{ semantic(14); }
 			| TFLOAT					{ semantic(100); }
 			| TVOID					{ semantic(15); };
 function_name		: TIDENT					{ semantic(16); };
-formal_param		: TLPAREN opt_formal_param TRPAREN	{ semantic(17); };
+formal_param		: TLPAREN opt_formal_param TRPAREN	{ semantic(17); }
+			| TLPAREN opt_formal_param error		{ yyerror("ERROR : right parentheses type not matching"); };
 opt_formal_param 	        	: formal_param_list				{ semantic(18); }
 			|					{ semantic(19); };
 formal_param_list       	: param_dcl				{ semantic(20); }
@@ -53,7 +54,8 @@ init_declarator		: declarator				{ semantic(31); }
 			| declarator TASSIGN TNUMBER		{ semantic(32); }
 			| declarator TASSIGN TDECIMAL		{ semantic(102); };
 declarator		: TIDENT					{ semantic(33); }
-			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); };
+			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); }
+			| TIDENT TLBRACKET opt_number error	{ yyerror("ERROR : right bracket type not matching"); };
 opt_number		: TNUMBER				{ semantic(35); }
 			|					{ semantic(36); };
 opt_stat_list		: statement_list				{ semantic(37); }
@@ -71,8 +73,10 @@ expression_st	    	: opt_expression TSEMICOLON		{ semantic(46); }
 opt_expression	        	: expression				{ semantic(47); }
 			|					{ semantic(48);};
 if_st			: TIF TLPAREN expression TRPAREN statement %prec LOWER_THAN_ELSE	{ semantic(49); }
-			| TIF TLPAREN expression TRPAREN statement TELSE statement		{ semantic(50); };
-while_st		    	: TWHILE TLPAREN expression TRPAREN statement			{ semantic(51); };
+			| TIF TLPAREN expression TRPAREN statement TELSE statement		{ semantic(50); }
+			| TIF TLPAREN expression error					{ yyerror("ERROR : right parentheses type not matching in if statement"); };
+while_st		    	: TWHILE TLPAREN expression TRPAREN statement			{ semantic(51); }
+			| TWHILE TLPAREN expression error					{ yyerror("ERROR : right parentheses type not matching in while statement"); };
 return_st			: TRETURN opt_expression TSEMICOLON	{ semantic(52); }
 			| TRETURN opt_expression error		{ yyerror("[ERROR : semicolon missing in return statement"); };
 expression		: assignment_exp				{ semantic(53); };
@@ -121,7 +125,8 @@ actual_param_list 	        	: assignment_exp 				{ semantic(93); }
 primary_exp 		: TIDENT 					{ semantic(95); }
 			| TNUMBER 				{ semantic(96); }
 			| TDECIMAL				{ semantic(101); }
-			| TLPAREN expression TRPAREN 		{ semantic(97); };
+			| TLPAREN expression TRPAREN 		{ semantic(97); }
+			| TLPAREN expression error			{ yyerror("ERROR : right parentheses type not matching in primary expression"); };
 %%
 void semantic(int n)
 {

@@ -1,0 +1,57 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{04CFC207-E6A0-4934-94D9-C3CE7C314F31}|parser\\parser.vcxproj|C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\reporterror.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{04CFC207-E6A0-4934-94D9-C3CE7C314F31}|parser\\parser.vcxproj|solutionrelative:parser\\reporterror.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{04CFC207-E6A0-4934-94D9-C3CE7C314F31}|parser\\parser.vcxproj|C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{04CFC207-E6A0-4934-94D9-C3CE7C314F31}|parser\\parser.vcxproj|solutionrelative:parser\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "reporterror.c",
+              "DocumentMoniker": "C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\reporterror.c",
+              "RelativeDocumentMoniker": "parser\\reporterror.c",
+              "ToolTip": "C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\reporterror.c",
+              "RelativeToolTip": "parser\\reporterror.c",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-05-31T04:03:48.222Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\main.c",
+              "RelativeDocumentMoniker": "parser\\main.c",
+              "ToolTip": "C:\\Users\\cse_223\\Documents\\GitHub\\compiler\\parser\\parser\\main.c",
+              "RelativeToolTip": "parser\\main.c",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-05-31T04:03:48.354Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
