@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser_tab.h"
-
+char* previous_text;
 %}
 %%
 "const"		return(TCONST);
@@ -46,7 +46,7 @@
 "]"		return(TRBRACKET);
 ","		return(TCOMMA);
 ";"		return(TSEMICOLON);
-[A-Za-z_][A-Za-z0-9_]*		return(TIDENT);
+[A-Za-z_][A-Za-z0-9_]*		{return(TIDENT);}
 [1-9][0-9]*|0([0-7]+|(x|X)[0-9A-Fa-f]*)?	return(TNUMBER);
 [0-9]+"."[0-9]+(e[+-]?[0-9]+)?		return(TDECIMAL);
 "/*"([^*]|\*+[^*/])*\**"*"	;

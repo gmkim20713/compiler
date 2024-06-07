@@ -441,7 +441,7 @@ char *yytext;
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser_tab.h"
-
+char* previous_text;
 #line 446 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
@@ -876,7 +876,7 @@ return(TSEMICOLON);
 case 40:
 YY_RULE_SETUP
 #line 49 "scanner.l"
-return(TIDENT);
+{return(TIDENT);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP

@@ -3,11 +3,21 @@
 #include <ctype.h>
 #include <malloc.h>
 
+#define MAX_STRING_LENGTH 1000 // 예상되는 최대 문자열 길이
+#define MAX_PARAM_COUNT 100
+
+char tmp_name[MAX_STRING_LENGTH];
+char tmp_type[MAX_STRING_LENGTH];
+char function_name[MAX_STRING_LENGTH];
+char function_type[MAX_STRING_LENGTH];
+
+
 /*yacc source for Mini C */
 void semantic(int);
+extern char *yytext;
 %}
-
-%token TIDENT TNUMBER TCONST TELSE TIF TEIF TINT TRETURN TVOID TWHILE
+%token TIDENT
+%token TNUMBER TCONST TELSE TIF TEIF TINT TRETURN TVOID TWHILE
 %token TASSIGN TADDASSIGN TSUBASSIGN TMULASSIGN TDIVASSIGN TMODASSIGN
 %token TOR TAND TEQUAL TNOTEQU TGREAT TLESS TGREATE TLESSE TINC TDEC
 %token TADD TSUB TMUL TDIV TMOD TNOT
@@ -19,26 +29,31 @@ void semantic(int);
 %%
 mini_c			: translation_unit				{ semantic(1); };
 translation_unit	    	: external_dcl				{ semantic(2); }
-			| translation_unit external_dcl			{ semantic(3); };
+			| translation_unit external_dcl		{ semantic(3); };
 external_dcl		: function_def				{ semantic(4); }
 			| declaration				{ semantic(5); };
 function_def		: function_header compound_st		{ semantic(6); };
-function_header	        	: dcl_spec function_name formal_param	{ semantic(7); };
-dcl_spec			: dcl_specifiers				{ semantic(8); };
+function_header	        	: dcl_spec function_name formal_param	{ if(!add_symbol_table("function", function_name, function_type, function_name)) {
+								    yyerror("Already exists");
+								  } else {
+								    semantic(7);
+								  }};
+dcl_spec			: dcl_specifiers				{ strcpy(tmp_name, yytext); semantic(8); };
 dcl_specifiers		: dcl_specifier				{ semantic(9); }
 			| dcl_specifiers dcl_specifier			{ semantic(10); };
 dcl_specifier		: type_qualifier				{ semantic(11); }
 			| type_specifier				{ semantic(12); };
 type_qualifier		: TCONST					{ semantic(13); };
-type_specifier		: TINT					{ semantic(14); }
-			| TFLOAT					{ semantic(100); }
-			| TVOID					{ semantic(15); };
-function_name		: TIDENT					{ semantic(16); };
-formal_param		: TLPAREN opt_formal_param TRPAREN	{ semantic(17); };
+type_specifier		: TINT					{ strcpy(tmp_type, yytext); semantic(14); }
+			| TFLOAT					{ strcpy(tmp_type, yytext); semantic(100); }
+			| TVOID					{ strcpy(tmp_type, yytext); semantic(15); };
+function_name		: TIDENT					{ strcpy(function_name, tmp_name); strcpy(function_type, tmp_type); semantic(16); };
+formal_param		: TLPAREN opt_formal_param TRPAREN	{ semantic(17); }
+			| TLPAREN opt_formal_param error		{ yyerror("ERROR : right parentheses type not matching"); };
 opt_formal_param 	        	: formal_param_list				{ semantic(18); }
 			|					{ semantic(19); };
-formal_param_list       	: param_dcl				{ semantic(20); }
-			| formal_param_list TCOMMA param_dcl	{ semantic(21); };
+formal_param_list       	: param_dcl				{ add_param_list(tmp_name, tmp_type); printf("%s, %s\n", tmp_type, tmp_name); semantic(20); }
+			| formal_param_list TCOMMA param_dcl	{ add_param_list(tmp_name, tmp_type); semantic(21); };
 param_dcl		: dcl_spec declarator			{ semantic(22); };
 compound_st		: TLBRACE opt_dcl_list opt_stat_list TRBRACE	{ semantic(23); };
 opt_dcl_list		: declaration_list				{ semantic(24); }
@@ -52,8 +67,9 @@ init_dcl_list		: init_declarator				{ semantic(29); }
 init_declarator		: declarator				{ semantic(31); }
 			| declarator TASSIGN TNUMBER		{ semantic(32); }
 			| declarator TASSIGN TDECIMAL		{ semantic(102); };
-declarator		: TIDENT					{ semantic(33); }
-			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); };
+declarator		: TIDENT					{ add_symbol_table("identifier", tmp_name, tmp_type, function_name); semantic(33); }
+			| TIDENT TLBRACKET opt_number TRBRACKET	{ add_symbol_table("identifier", tmp_name, strcat(tmp_type, " array"), function_name); semantic(34); }
+			| TIDENT TLBRACKET opt_number error	{ add_symbol_table("identifier", tmp_name, tmp_type, function_name); yyerrok; yyerror("ERROR : right bracket type not matching"); };
 opt_number		: TNUMBER				{ semantic(35); }
 			|					{ semantic(36); };
 opt_stat_list		: statement_list				{ semantic(37); }
@@ -71,8 +87,10 @@ expression_st	    	: opt_expression TSEMICOLON		{ semantic(46); }
 opt_expression	        	: expression				{ semantic(47); }
 			|					{ semantic(48);};
 if_st			: TIF TLPAREN expression TRPAREN statement %prec LOWER_THAN_ELSE	{ semantic(49); }
-			| TIF TLPAREN expression TRPAREN statement TELSE statement		{ semantic(50); };
-while_st		    	: TWHILE TLPAREN expression TRPAREN statement			{ semantic(51); };
+			| TIF TLPAREN expression TRPAREN statement TELSE statement		{ semantic(50); }
+			| TIF TLPAREN expression error					{ yyerror("ERROR : right parentheses type not matching in if statement"); };
+while_st		    	: TWHILE TLPAREN expression TRPAREN statement			{ semantic(51); }
+			| TWHILE TLPAREN expression error					{ yyerror("ERROR : right parentheses type not matching in while statement"); };
 return_st			: TRETURN opt_expression TSEMICOLON	{ semantic(52); }
 			| TRETURN opt_expression error		{ yyerror("[ERROR : semicolon missing in return statement"); };
 expression		: assignment_exp				{ semantic(53); };
