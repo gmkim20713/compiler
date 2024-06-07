@@ -1,33 +1,24 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "sym_table_lab.h"
 #include "hash_func.h"
+#include "parser_tab.h"
 
 char separators[] = " ,;\t\n\r\n";
-char str_pool[100];
+char str_pool[MAX_STR_POOL];
+// sym_table ï¿½ï¿½ï¿½ï¿½
+// StringPoolIndex | Length | Line
+int sym_table[SYM_TABLE_SIZE][3];
 Identifier identifier_list[SYM_TABLE_SIZE];
-int sym_table[SYM_TABLE_SIZE][2];
-
-int index_start = 0;
-int index_next = 0;
-int hash_value = 0;
-int sym_table_index = 0;
+extern line_number;
 
 #define isLetter(x) ( ((x) >= 'a' && (x) <='z') || ((x) >= 'A' && (x) <= 'Z') || ((x) == '_')) 
 #define isDigit(x) ( (x) >= '0' && (x) <= '9' )
 
-typedef struct HTentry* HTpointer;
-typedef struct HTentry {
-    int index;
-    int count;
-    HTpointer next;
-}HTentry;
-
 HTpointer HT[HASH_TABLE_SIZE];
 
-// symboltable ÃÊ±âÈ­
 void init_sym_table() {
     int i;
     for (i = 0; i < SYM_TABLE_SIZE; i++) {
@@ -39,48 +30,43 @@ void init_sym_table() {
 void print_sym_table() {
     int i;
     printf("\nSymbol Table\n");
-    printf("Index\tLength\tSymbol\n");
+    printf("Index\tStrPool\tLength\tLine\tSymbol\n");
     for (i = 0; i < SYM_TABLE_SIZE; i++) {
         if (sym_table[i][0] != -1) {
-            printf("%d\t%d\t%s\n", sym_table[i][0], sym_table[i][1], str_pool + sym_table[i][0]);
+            printf("[%d]\t%d\t%d\t%d\t%s\n", i, sym_table[i][0], sym_table[i][1], sym_table[i][2], str_pool + sym_table[i][0]);
         }
     }
 }
 
-HTpointer lookup_hash_table(int id_index, int hscode, Identifier id) {
+HTpointer lookup_hash_table(char* sym, int hscode) {
     HTpointer entry = HT[hscode];
 
-    // Ã¼ÀÌ´×µÈ ¸®½ºÆ®¸¦ Å½»ö
+    // Ã¼ï¿½Ì´×µï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Å½ï¿½ï¿½
     while (entry != NULL) {
-        if (strcmp(str_pool + (entry->index), str_pool + (id_index)) == 0) {
-            Identifier cmp_id = identifier_list[entry->count];
-            printf("%s %s\n", cmp_id.name, cmp_id.block);
-            if (strcmp(cmp_id.name, id.name) == 0 && strcmp(cmp_id.block, id.block) == 0) {
-                return entry; // Ã£Àº Ç×¸ñ ¹ÝÈ¯
-            }
+        if (strcmp(str_pool + (sym_table[entry->index][0]), sym) == 0) {
+            return entry; // Ã£ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½È¯
         }
         entry = entry->next;
     }
-    return NULL; // Ç×¸ñÀ» Ã£Áö ¸øÇÑ °æ¿ì
+    return NULL; // ï¿½×¸ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 }
 
 void add_hash_table(int id_index, int hscode) {
-    // »õ Ç×¸ñ »ý¼º ¹× ÃÊ±âÈ­
+    // ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê±ï¿½È­
     HTpointer newEntry = (HTpointer)malloc(sizeof(HTentry));
     if (newEntry == NULL) {
-        printf("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ\n");
+        printf("ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½\n");
         exit(1);
     }
     newEntry->index = id_index;
-    newEntry->count = sym_table_index;
     newEntry->next = NULL;
 
     if (HT[hscode] == NULL) {
-        // Ã¹ ¹øÂ° Ç×¸ñÀ¸·Î Ãß°¡
+        // Ã¹ ï¿½ï¿½Â° ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         HT[hscode] = newEntry;
     }
     else {
-        // ÀÌ¹Ì Ç×¸ñÀÌ ÀÖÀ¸¸é, ¸®½ºÆ®ÀÇ ¸Ç ¾Õ¿¡ Ãß°¡
+        // ï¿½Ì¹ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½Õ¿ï¿½ ï¿½ß°ï¿½
         newEntry->next = HT[hscode];
         HT[hscode] = newEntry;
     }
@@ -101,66 +87,62 @@ void print_hash_table() {
     }
 }
 
-int symtable(char* yytext, Identifier id) {
-    printf("%s %s\n", yytext, id.name);
-    int result;
-    int c; // ÀÐÀº ¹®ÀÚ¸¦ ÀúÀåÇÒ º¯¼ö
-    int char_index = 0;
-    bool flag_undefined = false;
+int sym_table_index = 0;
+int str_pool_index = 0;
+int symtable(Identifier id) {
+    int hash_value = 0;
+    char* ident = id.name;
+    int len = sizeof(ident) / sizeof(char);
 
-    while (((c = yytext[char_index++]) != '\0') && (index_next <= sizeof(str_pool) - 1)) { // Token yytext ÀÐ±â
-        str_pool[index_next++] = (char)c; // ¹öÆÛ¿¡ ¹®ÀÚ ÀúÀå
-    }
+    if (str_pool_index + len > MAX_STR_POOL) {
+        //ï¿½Ø½ï¿½ ï¿½ï¿½ï¿½
+        //ï¿½ßºï¿½ï¿½ï¿½ ï¿½Äºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ßºï¿½ï¿½ï¿½ ï¿½Äºï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã·Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        hash_value = divisionMethod(ident, HASH_TABLE_SIZE);
 
-    if (index_next == sizeof(str_pool)) { // error 3 - overflow
-        //printf("String Pool Overflow\n");
-        index_next = index_start;
-        //print_sym_table();
-        //print_hash_table();
-
-        return -3;
-    }
-
-    str_pool[index_next] = '\0'; // ¹®ÀÚ¿­ Á¾·á
-
-    // error 2 - ¹®ÀÚ¿­ Áß°£¿¡ Çã¿ëµÇÁö ¾ÊÀº ¹®ÀÚ°¡ Á¸ÀçÇÒ °æ¿ì ¿¡·¯ Ãâ·Â
-    if (flag_undefined == true) {
-        //printf("Error - Illegal identifier(%s)\n", str_pool + index_start);
-        index_next = index_start;
-        return -2;
-    }
-    else if (isDigit(str_pool[index_start])) { // error 2 - ¹®ÀÚ¿­ÀÌ ¼ýÀÚ·Î ½ÃÀÛÇÒ °æ¿ì
-        //printf("Error - start with digit (%s)\n", str_pool + index_start); // ¿¡·¯ Ãâ·Â
-        index_next = index_start;
-        return -2;
-    }
-    else if ((int)strlen(str_pool + index_start) >= 15) { // error 1 - ¹®ÀÚ¿­ ±æÀÌ°¡ 15ÀÚ ÀÌ»ó
-        //printf("Error - Exceed\n");
-        index_next = index_start;
-        return -1;
-    }
-    else {
-        hash_value = divisionMethod(str_pool + index_start, HASH_TABLE_SIZE);
-
-        HTpointer htp = lookup_hash_table(index_start, hash_value, id);
-        if (htp == NULL) { // »õ·Î¿î ¿Ã¹Ù¸¥ identifier
-            add_hash_table(index_start, hash_value);
-            sym_table[sym_table_index][0] = index_start;
-            sym_table[sym_table_index][1] = (int)strlen(str_pool + index_start);
-            identifier_list[sym_table_index++] = id;
-            
-            //printf("%d\t%s\n", hash_value, str_pool + index_start); // ¹öÆÛÀÇ ³»¿ëÀ» È­¸é¿¡ Ãâ·Â
-            index_start = ++index_next; // ¹öÆÛ ÀÎµ¦½º ÃÊ±âÈ­
+        HTpointer htp = lookup_hash_table(ident, hash_value);
+        if (htp == NULL) {
+            return 1; //string pool overflow
         }
-        else { // ÀÌ¹Ì Á¸ÀçÇÏ´Â identifier. symboltable¿¡ Ãß°¡ X
-            printf("%d\t%s (already exists)\n", hash_value, str_pool + index_start); // ¹öÆÛÀÇ ³»¿ëÀ» È­¸é¿¡ Ãâ·Â
-            index_next = index_start;
-            return -4;
-        }
+        return 3; //already exist
     }
 
-    //print_sym_table();
-    //print_hash_table();
+    hash_value = divisionMethod(ident, HASH_TABLE_SIZE);
 
-    return sym_table_index - 1; // symboltable index ¸®ÅÏ
+    HTpointer htp = lookup_hash_table(ident, hash_value);
+    if (htp == NULL) {
+        if (sym_table_index == SYM_TABLE_SIZE) {
+            return 2; //symbol table overflow
+        }
+
+        strcpy_s(str_pool + str_pool_index, MAX_STR_POOL, ident);
+
+        add_hash_table(sym_table_index, hash_value);
+
+        identifier_list[sym_table_index] = id;
+        sym_table[sym_table_index][0] = str_pool_index;
+        sym_table[sym_table_index][1] = len;
+        sym_table[sym_table_index++][2] = line_number;
+
+        str_pool[str_pool_index + len] = '\0';
+        str_pool_index += len + 1;
+
+        return 0;
+    }
+
+    return 4;
+}
+
+int check_sym_table(char* name, char* block) {
+    printf("%s, %s\n", name, block);
+    int hscode = divisionMethod(name, HASH_TABLE_SIZE);
+    HTpointer entry = HT[hscode];
+
+    while (entry != NULL) {
+        if (strcmp(identifier_list[entry->index].name, name) == 0 && (strcmp(identifier_list[entry->index].block, block) == 0 || strcmp(identifier_list[entry->index].category, "function") == 0) || identifier_list[entry->index].is_const) {
+            return 1; // Ã£ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½È¯
+        }
+        entry = entry->next;
+    }
+    return 0; // ï¿½×¸ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 }

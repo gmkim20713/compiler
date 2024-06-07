@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser_tab.h"
-char* previous_text;
+
+extern char* prev_yytext;
+extern line_number;
+extern void yyerror(const char* s);
 %}
+letter	[a-zA-Z_]
+digit	[0-9]
 %%
 "const"		return(TCONST);
 "else"		return(TELSE);
@@ -46,13 +51,38 @@ char* previous_text;
 "]"		return(TRBRACKET);
 ","		return(TCOMMA);
 ";"		return(TSEMICOLON);
-[A-Za-z_][A-Za-z0-9_]*		{return(TIDENT);}
-[1-9][0-9]*|0([0-7]+|(x|X)[0-9A-Fa-f]*)?	return(TNUMBER);
-[0-9]+"."[0-9]+(e[+-]?[0-9]+)?		return(TDECIMAL);
-"/*"([^*]|\*+[^*/])*\**"*"	;
-"//".*	;
-[ \t\n] ;
-.		return(yytext[0]);
+"/*"([^*]|"*"+[^*/])*"*"+"/"    		{
+                                    			for(int i = 0; i<yyleng; i++)
+                                    			{
+                                        			if(yytext[i] == '\n')
+                                            			line_number++;
+                                    			}
+                                    			;
+                                		} 
+"//".*                          		;
+{letter}({letter}|{digit})*			{
+    							if(yyleng >= 15)
+    							{
+    								yyerror("ERROR : Too long identifier");
+    								return(TERROR);
+    							}
+							prev_yytext = (char*)malloc((yyleng + 1) * sizeof(char)); // +1은 NULL 문자를 고려한 것
+							strcpy(prev_yytext, yytext);
+							printf("In Lex>>%s %s\n", yytext, prev_yytext);
+    							return(TIDENT);
+						}
+[+|-]?([1-9][0-9]*|0([0-7]+|(x|X)[0-9A-Fa-f]+)?)	return(TNUMBER); //정수 상수
+{digit}+"."{digit}+(e[+-]?{digit}+)?		return(TDECIMAL); //실수 상수
+{digit}+[A-Za-z0-9_]+			{
+							yyerror("ERROR : Illegal digit expression");
+							return(TERROR);
+					}
+"\n"     					line_number++;
+[ \t\r]   					;
+.                       				{ 
+							yyerror("ERROR : Illegal input");
+							return(TERROR);
+					} 
 %%
 
 int yywrap() {
