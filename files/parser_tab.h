@@ -45,7 +45,9 @@
 #define	TSEMICOLON	299
 #define	TFLOAT	300
 #define	TDECIMAL	301
-#define	LOWER_THAN_ELSE	302
+#define	TNOTASSIGNABLE	302
+#define	LOWER_THAN_ELSE	303
+#define	LOWER_THAN_ASSIGN	304
 
 
 extern YYSTYPE yylval;

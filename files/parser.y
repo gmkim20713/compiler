@@ -9,7 +9,7 @@ char tmp_name[MAX_STRING_LENGTH];
 char tmp_type[MAX_STRING_LENGTH];
 char function_name[MAX_STRING_LENGTH];
 char function_type[MAX_STRING_LENGTH];
-int is_const;
+int tmp_const;
 
 /*yacc source for Mini C */
 void semantic(int);
@@ -23,10 +23,10 @@ extern char *yytext;
 %token TOR TAND TEQUAL TNOTEQU TGREAT TLESS TGREATE TLESSE TINC TDEC
 %token TADD TSUB TMUL TDIV TMOD TNOT
 %token TLPAREN TRPAREN TLBRACE TRBRACE TLBRACKET TRBRACKET TCOMMA TSEMICOLON
-%token TFLOAT TDECIMAL
+%token TFLOAT TDECIMAL TNOTASSIGNABLE
 
-%nonassoc LOWER_THAN_ELSE
-%nonassoc TELSE
+%nonassoc LOWER_THAN_ELSE LOWER_THAN_ASSIGN
+%nonassoc TELSE TASSIGN TADDASSIGN TSUBASSIGN TMULASSIGN TDIVASSIGN TMODASSIGN
 %%
 mini_c			: translation_unit				{ semantic(1); printf("%s\n", yytext); };
 translation_unit	    	: external_dcl				{ semantic(2); printf("%s\n", yytext); }
@@ -48,7 +48,7 @@ dcl_specifiers		: dcl_specifier				{ semantic(9); printf("%s\n", yytext); }
 			| dcl_specifiers dcl_specifier			{ semantic(10); printf("%s\n", yytext); };
 dcl_specifier		: type_qualifier				{ semantic(11); printf("%s\n", yytext); }
 			| type_specifier				{ semantic(12); printf("%s\n", yytext); };
-type_qualifier		: TCONST					{ is_const = 1; semantic(13); printf("%s\n", yytext); };
+type_qualifier		: TCONST					{ tmp_const = 1; semantic(13); printf("%s\n", yytext); };
 type_specifier		: TINT					{ strcpy(tmp_type, yytext); semantic(14); printf("%s\n", yytext); }
 			| TFLOAT					{ strcpy(tmp_type, yytext); semantic(100); printf("%s\n", yytext); }
 			| TVOID					{ strcpy(tmp_type, yytext); semantic(15); printf("%s\n", yytext); };
@@ -72,24 +72,24 @@ declaration		: dcl_spec init_dcl_list TSEMICOLON		{ semantic(28); printf("%s\n",
 init_dcl_list		: init_declarator				{ semantic(29); printf("%s\n", yytext); }
 			| init_dcl_list TCOMMA init_declarator		{ semantic(30); printf("%s\n", yytext); }
 			| init_dcl_list init_declarator			{ yyerror("Missing comma for init declaration list"); };
-init_declarator		: declarator				{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, is_const)) {
+init_declarator		: declarator				{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
 								    semantic(31);
-								  } is_const = 0; }
-			| declarator TASSIGN TNUMBER		{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, is_const)) }
+								  } tmp_const = 0; }
+			| declarator TASSIGN TNUMBER		{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
 								    semantic(32);
-								  } is_const = 0; }
-			| declarator TASSIGN TDECIMAL		{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name. is_const)) {
+								  } tmp_const = 0; }
+			| declarator TASSIGN TDECIMAL		{ if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
 								    semantic(100);
-								  } is_const = 0; }
-declarator		: TIDENT					{ strcpy(tmp_name, prev_yytext); semantic(33); printf("%s\n", yytext); }
+								  } tmp_const = 0; }
+declarator			: TIDENT					{ strcpy(tmp_name, prev_yytext); semantic(33); printf("%s\n", yytext); }
 			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); printf("%s\n", yytext); }
-			| TIDENT TLBRACKET opt_number error	{ yyerror("Not closed bracket for declarator"); };
+			| TIDENT TLBRACKET opt_number error		{ yyerror("Not closed bracket for declarator"); };
 opt_number		: TNUMBER				{ semantic(35); printf("%s\n", yytext); }
 			|					{ semantic(36); printf("%s\n", yytext); };
 opt_stat_list		: statement_list				{ semantic(37); printf("%s\n", yytext); }
@@ -113,15 +113,29 @@ while_st		    	: TWHILE TLPAREN expression TRPAREN statement			{ semantic(51); p
 			| TWHILE TLPAREN TRPAREN statement	{ yyerror("Condition doesn't exists for while statment"); };
 return_st			: TRETURN opt_expression TSEMICOLON	{ semantic(52); printf("%s\n", yytext); }
 			| TRETURN opt_expression error		{ yyerror("Missing semicolon for return statement"); };
-expression		: assignment_exp				{ semantic(53); printf("%s\n", yytext); };
-assignment_exp		: logical_or_exp				{ semantic(54); printf("%s\n", yytext); }
-			| unary_exp TASSIGN assignment_exp		{ semantic(55); printf("%s\n", yytext); }
-			| unary_exp TADDASSIGN assignment_exp	{ semantic(56); printf("%s\n", yytext); }
-			| unary_exp TSUBASSIGN assignment_exp	{ semantic(57); printf("%s\n", yytext); }
-			| unary_exp TMULASSIGN assignment_exp	{ semantic(58); printf("%s\n", yytext); }
-			| unary_exp TDIVASSIGN assignment_exp	{ semantic(59); printf("%s\n", yytext); }
-			| unary_exp TMODASSIGN assignment_exp	{ semantic(60); printf("%s\n", yytext); }
+expression		: assignment_exp 				{ semantic(53); printf("%s\n", yytext); }; 
+assignment_exp		: logical_or_exp 				{ semantic(54); }
+			| assignable_exp				{ semantic(500); }
+			| not_assignable_exp				;
+assignable_exp		: left_hand TASSIGN assignment_exp		{ semantic(501); }
+			| left_hand TADDASSIGN assignment_exp		{ semantic(502); }
+			| left_hand TSUBASSIGN assignment_exp		{ semantic(503); }
+			| left_hand TMULASSIGN assignment_exp		{ semantic(504); }
+			| left_hand TDIVASSIGN assignment_exp		{ semantic(505); }
+			| left_hand TMODASSIGN assignment_exp	{ semantic(506); }
 			;
+not_assignable_exp		: TNUMBER TASSIGN assignment_exp		{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
+			| TNUMBER TADDASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
+			| TNUMBER TSUBASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
+			| TNUMBER TMULASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
+			| TNUMBER TDIVASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number");; printf("%s\n", yytext); }
+			| TNUMBER TMODASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number");; printf("%s\n", yytext); }
+			| TDECIMAL TASSIGN assignment_exp		{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
+			| TDECIMAL TADDASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
+			| TDECIMAL TSUBASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
+			| TDECIMAL TMULASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
+			| TDECIMAL TDIVASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
+			| TDECIMAL TMODASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); }
 logical_or_exp   	    	: logical_and_exp         			{ semantic(61); printf("%s\n", yytext); }
    			| logical_or_exp TOR logical_and_exp   	{ semantic(62); printf("%s\n", yytext); };
 logical_and_exp   	        	: equality_exp         			{ semantic(63); printf("%s\n", yytext); }
@@ -158,7 +172,8 @@ opt_actual_param 	        	: actual_param 				{ semantic(90); printf("%s\n", yyt
 actual_param 		: actual_param_list 				{ semantic(92); printf("%s\n", yytext); };
 actual_param_list 	        	: assignment_exp 				{ semantic(93); printf("%s\n", yytext); }
 			| actual_param_list TCOMMA assignment_exp 	{ semantic(94); printf("%s\n", yytext); };
-primary_exp 		: TIDENT 					{ if (!check_sym_table(yytext, function_name)) {yyerror("ERROR: not exist");} else {semantic(95);} printf("%s\n", yytext); }
+left_hand			: TIDENT					{ if (!check_sym_table(prev_yytext, function_name)) {yyerror("ERROR: not exist");} else {semantic(95);} printf("%s\n", yytext); };
+primary_exp 		: left_hand				{ semantic(510); }
 			| TNUMBER 				{ semantic(96); printf("%s\n", yytext); }
 			| TDECIMAL				{ semantic(97); printf("%s\n", yytext); }
 			| TLPAREN expression TRPAREN 		{ semantic(98); printf("%s\n", yytext); }
