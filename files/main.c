@@ -5,7 +5,7 @@
 
 char param_list[MAX_PARAM_COUNT][2][MAX_STRING_LENGTH]; //함수 파라미터 정보 저장
 int param_idx = 0;
-int line_number = 0;
+int line_number = 1;
 int error_count = 0;
 extern int sym_table_index;
 extern Identifier identifier_list[SYM_TABLE_SIZE];
@@ -43,7 +43,7 @@ int add_symbol_table(char* category, char* name, char* type, char* block, int is
 /* symbol table 출력 */
 void print_symbol_table() {
     printf("==================================================\n");
-    printf("Category\tName\tType\tBlock\tConst\n");
+    printf("Category\tName\tType\tBlock\tLine no.\n");
     for (int i = 0; i < sym_table_index; i++) {
         Identifier id = identifier_list[i];
         printf("%s\t%s\t%s\t%s\t%d\n", id.category, id.name, id.type, id.block, id.line_number);
