@@ -18,7 +18,7 @@ void add_param_list(char* name, char* type) {
     strcpy(param_list[param_idx++][1], type);
 }
 
-int add_symbol_table(char* category, char* name, char* type, char* block ,int is_const) {
+int add_symbol_table(char* category, char* name, char* type, char* block, int is_const) {
     Identifier id;
 
     strcpy(id.category, category);
@@ -38,7 +38,8 @@ int add_symbol_table(char* category, char* name, char* type, char* block ,int is
     return !symtable(id);
 }
 void print_symbol_table() {
-    printf("================================\n");
+    printf("==================================================\n");
+    printf("Category\tName\tType\tBlock\tConst\n");
     for (int i = 0; i < sym_table_index; i++) {
         Identifier id = identifier_list[i];
         printf("%s\t%s\t%s\t%s\t%d\n", id.category, id.name, id.type, id.block, id.line_number);
@@ -48,10 +49,10 @@ void print_symbol_table() {
 void main()
 {
     init_sym_table();
-	printf("***MiniC parsing begins\n");
-	yyparse();
-	printf("Parsing ends.***\n");
+    printf("***MiniC parsing begins\n");
+    yyparse();
+    printf("Parsing ends.***\n");
 
-	printf("\n--- %d error(s) detected.\n", error_count);
+    printf("\n--- %d error(s) detected.\n", error_count);
     print_symbol_table();
 }

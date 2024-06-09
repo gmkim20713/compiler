@@ -908,7 +908,6 @@ YY_RULE_SETUP
 {
     							if(yyleng >= 15)
     							{
-    								yyerror("ERROR : Too long identifier");
     								return(TERROR);
     							}
 							prev_yytext = (char*)malloc((yyleng + 1) * sizeof(char)); // +1은 NULL 문자를 고려한 것
@@ -919,17 +918,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 74 "scanner.l"
+#line 73 "scanner.l"
 return(TNUMBER); //정수 상수
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 75 "scanner.l"
+#line 74 "scanner.l"
 return(TDECIMAL); //실수 상수
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 76 "scanner.l"
+#line 75 "scanner.l"
 {
 							yyerror("ERROR : Illegal digit expression");
 							return(TERROR);
@@ -937,17 +936,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 80 "scanner.l"
+#line 79 "scanner.l"
 line_number++;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 80 "scanner.l"
 ;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 81 "scanner.l"
 { 
 							yyerror("ERROR : Illegal input");
 							return(TERROR);
@@ -955,10 +954,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 85 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 962 "lex.yy.c"
+#line 961 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1844,7 +1843,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 86 "scanner.l"
+#line 85 "scanner.l"
 
 
 int yywrap() {

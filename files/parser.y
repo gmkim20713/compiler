@@ -30,14 +30,22 @@ extern char *yytext;
 %%
 mini_c			: translation_unit				{ semantic(1); printf("%s\n", yytext); };
 translation_unit	    	: external_dcl				{ semantic(2); printf("%s\n", yytext); }
-			| translation_unit external_dcl			{ semantic(3); printf("%s\n", yytext); };
+			| translation_unit external_dcl		{ semantic(3); printf("%s\n", yytext); };
 external_dcl		: function_def				{ semantic(4); printf("%s\n", yytext); }
 			| declaration				{ semantic(5); printf("%s\n", yytext); }
 			| TIDENT TSEMICOLON			
 			| TIDENT error				{ yyerror("Missing semicolon for external declaration"); };
 function_def		: function_header compound_st		{ strcpy(function_name, ""); semantic(6); printf("%s\n", yytext); }
-			| function_header TSEMICOLON		{ strcpy(function_name, ""); semantic(300); printf("%s\n", yytext); }
+			| short_function_header TSEMICOLON		{ strcpy(function_name, ""); semantic(300); printf("%s\n", yytext); }
 			| function_header error			{ yyerror("Missing semicolon for function definition"); };
+short_function_header	: dcl_spec function_name short_formal_param	{ if(!add_symbol_table("function", function_name, function_type, function_name)) {
+								    yyerror("ERROR : already exists");
+								  } else {
+								    semantic(7);
+								  }  };
+short_formal_param		: TLPAREN short_opt_formal_param TRPAREN	{};
+short_opt_formal_param	: type_specifier				{ add_param_list("(null}", tmp_type); }
+			| type_specifier TCOMMA short_opt_formal_param	{ add_param_list("(null}", tmp_type); };
 function_header	        	: dcl_spec function_name formal_param	{ if(!add_symbol_table("function", function_name, function_type, function_name)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -88,7 +96,7 @@ init_declarator		: declarator				{ if(!add_symbol_table("variable", tmp_name, tm
 								    semantic(100);
 								  } tmp_const = 0; }
 declarator			: TIDENT					{ strcpy(tmp_name, prev_yytext); semantic(33); printf("%s\n", yytext); }
-			| TIDENT TLBRACKET opt_number TRBRACKET	{ semantic(34); printf("%s\n", yytext); }
+			| TIDENT TLBRACKET opt_number TRBRACKET	{ strcpy(tmp_name, prev_yytext); semantic(34); printf("%s\n", yytext); }
 			| TIDENT TLBRACKET opt_number error		{ yyerror("Not closed bracket for declarator"); };
 opt_number		: TNUMBER				{ semantic(35); printf("%s\n", yytext); }
 			|					{ semantic(36); printf("%s\n", yytext); };
@@ -124,7 +132,7 @@ assignable_exp		: left_hand TASSIGN assignment_exp		{ semantic(501); }
 			| left_hand TDIVASSIGN assignment_exp		{ semantic(505); }
 			| left_hand TMODASSIGN assignment_exp	{ semantic(506); }
 			;
-not_assignable_exp		: TNUMBER TASSIGN assignment_exp		{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
+not_assignable_exp	: TNUMBER TASSIGN assignment_exp		{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
 			| TNUMBER TADDASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
 			| TNUMBER TSUBASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
 			| TNUMBER TMULASSIGN assignment_exp	{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); }
@@ -181,5 +189,5 @@ primary_exp 		: left_hand				{ semantic(510); }
 %%
 void semantic(int n)
 {
-	printf("reduced rule number = %d\n", n);
+	// printf("reduced rule number = %d\n", n);
 }

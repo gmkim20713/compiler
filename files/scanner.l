@@ -63,7 +63,6 @@ digit	[0-9]
 {letter}({letter}|{digit})*			{
     							if(yyleng >= 15)
     							{
-    								yyerror("ERROR : Too long identifier");
     								return(TERROR);
     							}
 							prev_yytext = (char*)malloc((yyleng + 1) * sizeof(char)); // +1은 NULL 문자를 고려한 것
