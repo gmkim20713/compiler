@@ -67,7 +67,6 @@ digit	[0-9]
     							}
 							prev_yytext = (char*)malloc((yyleng + 1) * sizeof(char)); // +1은 NULL 문자를 고려한 것
 							strcpy(prev_yytext, yytext);
-							printf("In Lex>>%s %s\n", yytext, prev_yytext);
     							return(TIDENT);
 						}
 [+|-]?([1-9][0-9]*|0([0-7]+|(x|X)[0-9A-Fa-f]+)?)	return(TNUMBER); //정수 상수

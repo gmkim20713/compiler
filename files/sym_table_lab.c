@@ -133,8 +133,8 @@ int symtable(Identifier id) {
     return 4;
 }
 
+/* symbol table과 identifier table에서 현재 블록에 동일한 이름의 식별자가 이미 선언되어 있는지 파난*/
 int check_sym_table(char* name, char* block) {
-    printf("%s, %s\n", name, block);
     int hscode = divisionMethod(name, HASH_TABLE_SIZE);
     HTpointer entry = HT[hscode];
 

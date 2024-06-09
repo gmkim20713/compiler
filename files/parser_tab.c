@@ -208,16 +208,16 @@ static const short yyrhs[] = {    51,
 
 #if YYDEBUG != 0
 static const short yyrline[] = { 0,
-    31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-    41,    46,    47,    48,    49,    54,    55,    56,    57,    58,
-    59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
-    69,    70,    71,    72,    73,    74,    75,    76,    77,    78,
-    79,    80,    81,    82,    83,    88,    93,    98,    99,   100,
-   101,   102,   103,   104,   105,   106,   107,   108,   109,   110,
-   111,   113,   114,   115,   116,   117,   118,   119,   120,   121,
-   122,   123,   124,   125,   126,   127,   128,   129,   130,   131,
-   132,   133,   135,   136,   137,   138,   139,   140,   141,   142,
-   143,   144,   145,   146,   147,   148,   149,   150,   151,   152,
+    30,    31,    32,    33,    34,    35,    36,    37,    38,    39,
+    40,    45,    46,    47,    48,    53,    54,    55,    56,    57,
+    58,    59,    60,    61,    62,    63,    64,    65,    66,    67,
+    68,    69,    70,    71,    72,    73,    74,    75,    76,    77,
+    78,    79,    80,    81,    82,    87,    92,    97,    98,    99,
+   100,   101,   102,   103,   104,   105,   106,   107,   108,   109,
+   110,   112,   113,   114,   115,   116,   117,   118,   119,   120,
+   121,   122,   123,   124,   125,   126,   127,   128,   129,   130,
+   131,   132,   134,   135,   136,   137,   138,   139,   140,   141,
+   142,   143,   144,   145,   147,   148,   149,   150,   151,   152,
    153,   154,   155,   156,   157,   158,   159,   160,   161,   162,
    163,   164,   165,   166,   167,   168,   169,   170,   171,   172,
    173,   174,   175,   176,   177,   178,   179,   180,   181,   182,
@@ -894,43 +894,43 @@ yyreduce:
   switch (yyn) {
 
 case 1:
-#line 31 "parser.y"
-{ semantic(1); printf("%s\n", yytext); ;
+#line 30 "parser.y"
+{ semantic(1); ;
     break;}
 case 2:
-#line 32 "parser.y"
-{ semantic(2); printf("%s\n", yytext); ;
+#line 31 "parser.y"
+{ semantic(2); ;
     break;}
 case 3:
-#line 33 "parser.y"
-{ semantic(3); printf("%s\n", yytext); ;
+#line 32 "parser.y"
+{ semantic(3); ;
     break;}
 case 4:
-#line 34 "parser.y"
-{ semantic(4); printf("%s\n", yytext); ;
+#line 33 "parser.y"
+{ semantic(4); ;
     break;}
 case 5:
-#line 35 "parser.y"
-{ semantic(5); printf("%s\n", yytext); ;
+#line 34 "parser.y"
+{ semantic(5); ;
     break;}
 case 7:
-#line 37 "parser.y"
+#line 36 "parser.y"
 { yyerror("Missing semicolon for external declaration"); ;
     break;}
 case 8:
-#line 38 "parser.y"
-{ strcpy(function_name, ""); semantic(6); printf("%s\n", yytext); ;
+#line 37 "parser.y"
+{ strcpy(function_name, ""); semantic(6); ;
     break;}
 case 9:
-#line 39 "parser.y"
-{ strcpy(function_name, ""); semantic(300); printf("%s\n", yytext); ;
+#line 38 "parser.y"
+{ strcpy(function_name, ""); semantic(300); ;
     break;}
 case 10:
-#line 40 "parser.y"
+#line 39 "parser.y"
 { yyerror("Missing semicolon for function definition"); ;
     break;}
 case 11:
-#line 41 "parser.y"
+#line 40 "parser.y"
 { if(!add_symbol_table("function", function_name, function_type, function_name)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -938,19 +938,19 @@ case 11:
 								  }  ;
     break;}
 case 12:
-#line 46 "parser.y"
+#line 45 "parser.y"
 {;
     break;}
 case 13:
-#line 47 "parser.y"
+#line 46 "parser.y"
 { add_param_list("(null}", tmp_type); ;
     break;}
 case 14:
-#line 48 "parser.y"
+#line 47 "parser.y"
 { add_param_list("(null}", tmp_type); ;
     break;}
 case 15:
-#line 49 "parser.y"
+#line 48 "parser.y"
 { if(!add_symbol_table("function", function_name, function_type, function_name)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -958,123 +958,123 @@ case 15:
 								  }  ;
     break;}
 case 16:
-#line 54 "parser.y"
-{ strcpy(tmp_name, yytext); semantic(8); printf("%s\n", yytext); ;
+#line 53 "parser.y"
+{ strcpy(tmp_name, yytext); semantic(8); ;
     break;}
 case 17:
-#line 55 "parser.y"
-{ semantic(9); printf("%s\n", yytext); ;
+#line 54 "parser.y"
+{ semantic(9); ;
     break;}
 case 18:
-#line 56 "parser.y"
-{ semantic(10); printf("%s\n", yytext); ;
+#line 55 "parser.y"
+{ semantic(10); ;
     break;}
 case 19:
-#line 57 "parser.y"
-{ semantic(11); printf("%s\n", yytext); ;
+#line 56 "parser.y"
+{ semantic(11); ;
     break;}
 case 20:
-#line 58 "parser.y"
-{ semantic(12); printf("%s\n", yytext); ;
+#line 57 "parser.y"
+{ semantic(12); ;
     break;}
 case 21:
-#line 59 "parser.y"
-{ tmp_const = 1; semantic(13); printf("%s\n", yytext); ;
+#line 58 "parser.y"
+{ tmp_const = 1; semantic(13); ;
     break;}
 case 22:
-#line 60 "parser.y"
-{ strcpy(tmp_type, yytext); semantic(14); printf("%s\n", yytext); ;
+#line 59 "parser.y"
+{ strcpy(tmp_type, yytext); semantic(14); ;
     break;}
 case 23:
-#line 61 "parser.y"
-{ strcpy(tmp_type, yytext); semantic(100); printf("%s\n", yytext); ;
+#line 60 "parser.y"
+{ strcpy(tmp_type, yytext); semantic(100); ;
     break;}
 case 24:
-#line 62 "parser.y"
-{ strcpy(tmp_type, yytext); semantic(15); printf("%s\n", yytext); ;
+#line 61 "parser.y"
+{ strcpy(tmp_type, yytext); semantic(15); ;
     break;}
 case 25:
-#line 63 "parser.y"
-{ strcpy(function_name, tmp_name); strcpy(function_type, tmp_type); semantic(16); printf("%s\n", yytext); ;
+#line 62 "parser.y"
+{ strcpy(function_name, tmp_name); strcpy(function_type, tmp_type); semantic(16); ;
     break;}
 case 26:
-#line 64 "parser.y"
-{ semantic(17); printf("%s\n", yytext); ;
+#line 63 "parser.y"
+{ semantic(17); ;
     break;}
 case 27:
-#line 65 "parser.y"
+#line 64 "parser.y"
 { yyerror("Not closed parenthesis for formal parameter"); ;
     break;}
 case 28:
-#line 66 "parser.y"
-{ semantic(18); printf("%s\n", yytext); ;
+#line 65 "parser.y"
+{ semantic(18); ;
     break;}
 case 29:
-#line 67 "parser.y"
-{ semantic(19); printf("%s\n", yytext); ;
+#line 66 "parser.y"
+{ semantic(19); ;
     break;}
 case 30:
-#line 68 "parser.y"
-{ add_param_list(tmp_name, tmp_type); printf("%s, %s\n", tmp_type, tmp_name); semantic(20); ;
+#line 67 "parser.y"
+{ add_param_list(tmp_name, tmp_type); semantic(20); ;
     break;}
 case 31:
-#line 69 "parser.y"
+#line 68 "parser.y"
 { add_param_list(tmp_name, tmp_type); semantic(21); ;
     break;}
 case 32:
-#line 70 "parser.y"
+#line 69 "parser.y"
 { yyerror("Missing comma for formal param list"); ;
     break;}
 case 33:
-#line 71 "parser.y"
-{ semantic(22); printf("%s\n", yytext); ;
+#line 70 "parser.y"
+{ semantic(22); ;
     break;}
 case 34:
-#line 72 "parser.y"
-{ semantic(23); printf("%s\n", yytext); ;
+#line 71 "parser.y"
+{ semantic(23); ;
     break;}
 case 35:
-#line 73 "parser.y"
+#line 72 "parser.y"
 { yyerror("Not closed brace for compound statement"); ;
     break;}
 case 36:
-#line 74 "parser.y"
-{ semantic(24); printf("%s\n", yytext); ;
+#line 73 "parser.y"
+{ semantic(24); ;
     break;}
 case 37:
-#line 75 "parser.y"
-{ semantic(25); printf("%s\n", yytext); ;
+#line 74 "parser.y"
+{ semantic(25); ;
     break;}
 case 38:
-#line 76 "parser.y"
-{ semantic(26); printf("%s\n", yytext); ;
+#line 75 "parser.y"
+{ semantic(26); ;
     break;}
 case 39:
-#line 77 "parser.y"
-{ semantic(27); printf("%s\n", yytext); ;
+#line 76 "parser.y"
+{ semantic(27); ;
     break;}
 case 40:
-#line 78 "parser.y"
-{ semantic(28); printf("%s\n", yytext); ;
+#line 77 "parser.y"
+{ semantic(28); ;
     break;}
 case 41:
-#line 79 "parser.y"
+#line 78 "parser.y"
 { yyerror("Missing semicolon for declaration"); ;
     break;}
 case 42:
-#line 80 "parser.y"
-{ semantic(29); printf("%s\n", yytext); ;
+#line 79 "parser.y"
+{ semantic(29); ;
     break;}
 case 43:
-#line 81 "parser.y"
-{ semantic(30); printf("%s\n", yytext); ;
+#line 80 "parser.y"
+{ semantic(30); ;
     break;}
 case 44:
-#line 82 "parser.y"
+#line 81 "parser.y"
 { yyerror("Missing comma for init declaration list"); ;
     break;}
 case 45:
-#line 83 "parser.y"
+#line 82 "parser.y"
 { if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -1082,7 +1082,7 @@ case 45:
 								  } tmp_const = 0; ;
     break;}
 case 46:
-#line 88 "parser.y"
+#line 87 "parser.y"
 { if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -1090,7 +1090,7 @@ case 46:
 								  } tmp_const = 0; ;
     break;}
 case 47:
-#line 93 "parser.y"
+#line 92 "parser.y"
 { if(!add_symbol_table("variable", tmp_name, tmp_type, function_name, tmp_const)) {
 								    yyerror("ERROR : already exists");
 								  } else {
@@ -1098,292 +1098,292 @@ case 47:
 								  } tmp_const = 0; ;
     break;}
 case 48:
-#line 98 "parser.y"
-{ strcpy(tmp_name, prev_yytext); semantic(33); printf("%s\n", yytext); ;
+#line 97 "parser.y"
+{ strcpy(tmp_name, prev_yytext); semantic(33); ;
     break;}
 case 49:
-#line 99 "parser.y"
-{ strcpy(tmp_name, prev_yytext); semantic(34); printf("%s\n", yytext); ;
+#line 98 "parser.y"
+{ strcpy(tmp_name, prev_yytext); semantic(34); ;
     break;}
 case 50:
-#line 100 "parser.y"
+#line 99 "parser.y"
 { yyerror("Not closed bracket for declarator"); ;
     break;}
 case 51:
-#line 101 "parser.y"
-{ semantic(35); printf("%s\n", yytext); ;
+#line 100 "parser.y"
+{ semantic(35); ;
     break;}
 case 52:
-#line 102 "parser.y"
-{ semantic(36); printf("%s\n", yytext); ;
+#line 101 "parser.y"
+{ semantic(36); ;
     break;}
 case 53:
-#line 103 "parser.y"
-{ semantic(37); printf("%s\n", yytext); ;
+#line 102 "parser.y"
+{ semantic(37); ;
     break;}
 case 54:
-#line 104 "parser.y"
-{ semantic(38); printf("%s\n", yytext); ;
+#line 103 "parser.y"
+{ semantic(38); ;
     break;}
 case 55:
-#line 105 "parser.y"
-{ semantic(39); printf("%s\n", yytext); ;
+#line 104 "parser.y"
+{ semantic(39); ;
     break;}
 case 56:
-#line 106 "parser.y"
-{ semantic(40); printf("%s\n", yytext); ;
+#line 105 "parser.y"
+{ semantic(40); ;
     break;}
 case 57:
-#line 107 "parser.y"
-{ semantic(41); printf("%s\n", yytext); ;
+#line 106 "parser.y"
+{ semantic(41); ;
     break;}
 case 58:
-#line 108 "parser.y"
-{ semantic(42); printf("%s\n", yytext); ;
+#line 107 "parser.y"
+{ semantic(42); ;
     break;}
 case 59:
-#line 109 "parser.y"
-{ semantic(43); printf("%s\n", yytext); ;
+#line 108 "parser.y"
+{ semantic(43); ;
     break;}
 case 60:
-#line 110 "parser.y"
-{ semantic(44); printf("%s\n", yytext); ;
+#line 109 "parser.y"
+{ semantic(44); ;
     break;}
 case 61:
-#line 111 "parser.y"
-{ semantic(45); printf("%s\n", yytext); ;
+#line 110 "parser.y"
+{ semantic(45); ;
     break;}
 case 62:
-#line 113 "parser.y"
-{ semantic(46); printf("%s\n", yytext); ;
+#line 112 "parser.y"
+{ semantic(46); ;
     break;}
 case 63:
-#line 114 "parser.y"
+#line 113 "parser.y"
 { yyerror("Missing semicolon for expression statement"); ;
     break;}
 case 64:
-#line 115 "parser.y"
-{ semantic(47); printf("%s\n", yytext); ;
+#line 114 "parser.y"
+{ semantic(47); ;
     break;}
 case 65:
-#line 116 "parser.y"
-{ semantic(48); printf("%s\n", yytext); ;
+#line 115 "parser.y"
+{ semantic(48); ;
     break;}
 case 66:
-#line 117 "parser.y"
-{ semantic(49); printf("%s\n", yytext); ;
+#line 116 "parser.y"
+{ semantic(49); ;
     break;}
 case 67:
-#line 118 "parser.y"
-{ semantic(50); printf("%s\n", yytext); ;
+#line 117 "parser.y"
+{ semantic(50); ;
     break;}
 case 68:
-#line 119 "parser.y"
-{ semantic(51); printf("%s\n", yytext); ;
+#line 118 "parser.y"
+{ semantic(51); ;
     break;}
 case 69:
-#line 120 "parser.y"
+#line 119 "parser.y"
 { yyerror("Not closed parenthesis for while statement"); ;
     break;}
 case 70:
-#line 121 "parser.y"
+#line 120 "parser.y"
 { yyerror("Condition doesn't exists for while statment"); ;
     break;}
 case 71:
-#line 122 "parser.y"
-{ semantic(52); printf("%s\n", yytext); ;
+#line 121 "parser.y"
+{ semantic(52); ;
     break;}
 case 72:
-#line 123 "parser.y"
+#line 122 "parser.y"
 { yyerror("Missing semicolon for return statement"); ;
     break;}
 case 73:
-#line 124 "parser.y"
-{ semantic(53); printf("%s\n", yytext); ;
+#line 123 "parser.y"
+{ semantic(53); ;
     break;}
 case 74:
-#line 125 "parser.y"
+#line 124 "parser.y"
 { semantic(54); ;
     break;}
 case 75:
-#line 126 "parser.y"
+#line 125 "parser.y"
 { semantic(500); ;
     break;}
 case 77:
-#line 128 "parser.y"
+#line 127 "parser.y"
 { semantic(501); ;
     break;}
 case 78:
-#line 129 "parser.y"
+#line 128 "parser.y"
 { semantic(502); ;
     break;}
 case 79:
-#line 130 "parser.y"
+#line 129 "parser.y"
 { semantic(503); ;
     break;}
 case 80:
-#line 131 "parser.y"
+#line 130 "parser.y"
 { semantic(504); ;
     break;}
 case 81:
-#line 132 "parser.y"
+#line 131 "parser.y"
 { semantic(505); ;
     break;}
 case 82:
-#line 133 "parser.y"
+#line 132 "parser.y"
 { semantic(506); ;
     break;}
 case 83:
-#line 135 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); ;
+#line 134 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 84:
-#line 136 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); ;
+#line 135 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 85:
-#line 137 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); ;
+#line 136 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 86:
-#line 138 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number"); printf("%s\n", yytext); ;
+#line 137 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 87:
-#line 139 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number");; printf("%s\n", yytext); ;
+#line 138 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 88:
-#line 140 "parser.y"
-{ yyerror("ERROR: Left side cannot be a number");; printf("%s\n", yytext); ;
+#line 139 "parser.y"
+{ yyerror("ERROR: Left side cannot be a number"); ;
     break;}
 case 89:
-#line 141 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 140 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 90:
-#line 142 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 141 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 91:
-#line 143 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 142 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 92:
-#line 144 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 143 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 93:
-#line 145 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 144 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 94:
-#line 146 "parser.y"
-{ yyerror("ERROR: Left side cannot be a decimal point"); printf("%s\n", yytext); ;
+#line 145 "parser.y"
+{ yyerror("ERROR: Left side cannot be a decimal point"); ;
     break;}
 case 95:
 #line 147 "parser.y"
-{ semantic(61); printf("%s\n", yytext); ;
+{ semantic(61); ;
     break;}
 case 96:
 #line 148 "parser.y"
-{ semantic(62); printf("%s\n", yytext); ;
+{ semantic(62); ;
     break;}
 case 97:
 #line 149 "parser.y"
-{ semantic(63); printf("%s\n", yytext); ;
+{ semantic(63); ;
     break;}
 case 98:
 #line 150 "parser.y"
-{ semantic(64); printf("%s\n", yytext); ;
+{ semantic(64); ;
     break;}
 case 99:
 #line 151 "parser.y"
-{ semantic(65); printf("%s\n", yytext); ;
+{ semantic(65); ;
     break;}
 case 100:
 #line 152 "parser.y"
-{ semantic(66); printf("%s\n", yytext); ;
+{ semantic(66); ;
     break;}
 case 101:
 #line 153 "parser.y"
-{ semantic(67); printf("%s\n", yytext); ;
+{ semantic(67); ;
     break;}
 case 102:
 #line 154 "parser.y"
-{ semantic(68); printf("%s\n", yytext); ;
+{ semantic(68); ;
     break;}
 case 103:
 #line 155 "parser.y"
-{ semantic(69); printf("%s\n", yytext); ;
+{ semantic(69); ;
     break;}
 case 104:
 #line 156 "parser.y"
-{ semantic(70); printf("%s\n", yytext); ;
+{ semantic(70); ;
     break;}
 case 105:
 #line 157 "parser.y"
-{ semantic(71); printf("%s\n", yytext); ;
+{ semantic(71); ;
     break;}
 case 106:
 #line 158 "parser.y"
-{ semantic(72); printf("%s\n", yytext); ;
+{ semantic(72); ;
     break;}
 case 107:
 #line 159 "parser.y"
-{ semantic(73); printf("%s\n", yytext); ;
+{ semantic(73); ;
     break;}
 case 108:
 #line 160 "parser.y"
-{ semantic(74); printf("%s\n", yytext); ;
+{ semantic(74); ;
     break;}
 case 109:
 #line 161 "parser.y"
-{ semantic(75); printf("%s\n", yytext); ;
+{ semantic(75); ;
     break;}
 case 110:
 #line 162 "parser.y"
-{ semantic(76); printf("%s\n", yytext); ;
+{ semantic(76); ;
     break;}
 case 111:
 #line 163 "parser.y"
-{ semantic(77); printf("%s\n", yytext); ;
+{ semantic(77); ;
     break;}
 case 112:
 #line 164 "parser.y"
-{ semantic(78); printf("%s\n", yytext); ;
+{ semantic(78); ;
     break;}
 case 113:
 #line 165 "parser.y"
-{ semantic(79); printf("%s\n", yytext); ;
+{ semantic(79); ;
     break;}
 case 114:
 #line 166 "parser.y"
-{ semantic(80); printf("%s\n", yytext); ;
+{ semantic(80); ;
     break;}
 case 115:
 #line 167 "parser.y"
-{ semantic(81); printf("%s\n", yytext); ;
+{ semantic(81); ;
     break;}
 case 116:
 #line 168 "parser.y"
-{ semantic(82); printf("%s\n", yytext); ;
+{ semantic(82); ;
     break;}
 case 117:
 #line 169 "parser.y"
-{ semantic(83); printf("%s\n", yytext); ;
+{ semantic(83); ;
     break;}
 case 118:
 #line 170 "parser.y"
-{ semantic(84); printf("%s\n", yytext); ;
+{ semantic(84); ;
     break;}
 case 119:
 #line 171 "parser.y"
-{ semantic(85); printf("%s\n", yytext); ;
+{ semantic(85); ;
     break;}
 case 120:
 #line 172 "parser.y"
-{ semantic(86); printf("%s\n", yytext); ;
+{ semantic(86); ;
     break;}
 case 121:
 #line 173 "parser.y"
@@ -1391,7 +1391,7 @@ case 121:
     break;}
 case 122:
 #line 174 "parser.y"
-{ semantic(87); printf("%s\n", yytext); ;
+{ semantic(87); ;
     break;}
 case 123:
 #line 175 "parser.y"
@@ -1399,35 +1399,35 @@ case 123:
     break;}
 case 124:
 #line 176 "parser.y"
-{ semantic(88); printf("%s\n", yytext); ;
+{ semantic(88); ;
     break;}
 case 125:
 #line 177 "parser.y"
-{ semantic(89); printf("%s\n", yytext); ;
+{ semantic(89); ;
     break;}
 case 126:
 #line 178 "parser.y"
-{ semantic(90); printf("%s\n", yytext); ;
+{ semantic(90); ;
     break;}
 case 127:
 #line 179 "parser.y"
-{ semantic(91); printf("%s\n", yytext); ;
+{ semantic(91); ;
     break;}
 case 128:
 #line 180 "parser.y"
-{ semantic(92); printf("%s\n", yytext); ;
+{ semantic(92); ;
     break;}
 case 129:
 #line 181 "parser.y"
-{ semantic(93); printf("%s\n", yytext); ;
+{ semantic(93); ;
     break;}
 case 130:
 #line 182 "parser.y"
-{ semantic(94); printf("%s\n", yytext); ;
+{ semantic(94); ;
     break;}
 case 131:
 #line 183 "parser.y"
-{ if (!check_sym_table(prev_yytext, function_name)) {yyerror("ERROR: not exist");} else {semantic(95);} printf("%s\n", yytext); ;
+{ if (!check_sym_table(prev_yytext, function_name)) {yyerror("ERROR: not defined");} else {semantic(95);} ;
     break;}
 case 132:
 #line 184 "parser.y"
@@ -1435,15 +1435,15 @@ case 132:
     break;}
 case 133:
 #line 185 "parser.y"
-{ semantic(96); printf("%s\n", yytext); ;
+{ semantic(96); ;
     break;}
 case 134:
 #line 186 "parser.y"
-{ semantic(97); printf("%s\n", yytext); ;
+{ semantic(97); ;
     break;}
 case 135:
 #line 187 "parser.y"
-{ semantic(98); printf("%s\n", yytext); ;
+{ semantic(98); ;
     break;}
 case 136:
 #line 188 "parser.y"
